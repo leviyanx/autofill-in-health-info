@@ -176,9 +176,11 @@ def fill_for_multiply_user(users):
         # end the session
         driver.quit()
 
+
 def main():
     data = load_json_data("users-info.json")  # load users' info
     fill_for_multiply_user(data['users_info'])
+
 
 if __name__ == "__main__":
     main()
