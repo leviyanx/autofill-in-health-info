@@ -6,8 +6,3 @@ def load_json_data(file):
     data = json.load(f)
     f.close()
     return data
-
-
-def notify_manager():
-    print("notify")
-
