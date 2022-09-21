@@ -5,7 +5,7 @@ Requirement
 python@3.10
 
 ```shell
-pip3 install selenium webdriver_manager
+pip3 install selenium webdriver_manager json smtplib email
 ```
 
 user-info.json
@@ -31,9 +31,19 @@ user-info.json
 
 explain location string : TODO
 
+manager_email_info.json
+
+```json
+{
+  "from_address": "sender@mail.com",
+  "from_address_pwd": "sender_password",
+  "to_address": "receiver@mail.com"
+}
+```
+
 Features
 
-Locally, auto login, auto fill, auto submit
-Remotely, perform above actions (in specified time)
-fill for multiply users
-if fail, notify manager
+️-[x] Locally, auto login, auto fill, auto submit
+-[] Remotely, perform above actions (in specified time)
+-[x] fill for multiply users
+-[] If fail, log related error, skip current user and not affect next user, notify manager.
