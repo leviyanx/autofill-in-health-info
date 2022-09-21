@@ -6,7 +6,8 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import util
+from EmailUtil import notify_manager
+from util import load_json_data
 
 
 def verify_identity(driver, username, password):
@@ -31,7 +32,7 @@ def verify_identity(driver, username, password):
         submit_button = driver.find_element(By.CLASS_NAME, 'login-button.ant-btn')
         submit_button.click()
     except Exception:
-        # TODO: notify user
+        # TODO: log error
         print("Cannot login in.")
 
 
@@ -105,7 +106,7 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang"):
 
         print("submit all information")
     except Exception:
-        # TODO: notify user
+        # TODO: log error
         print("over time")
     finally:
         driver.quit()
@@ -129,8 +130,9 @@ def start_process(driver):
         # wait to new page (new url) load
         time.sleep(3)
     except Exception:
-        # TODO: notify user
+        # TODO: log error
         print("Cannot enter the start process page.")
+
 
 
 def fill_for_multiply_user(users):
@@ -142,6 +144,7 @@ def fill_for_multiply_user(users):
 
     for user in users:
         # set single user info
+        name = user['name']
         username = user['username']
         password = user['password']
         in_campus_status = user['in_campus_status']
@@ -154,20 +157,27 @@ def fill_for_multiply_user(users):
         title = driver.title
         if title == "统一身份认证平台":
             # need verify identity (every day need verify)
-            verify_identity(driver, username, password)
-            print("Login in.")
+            try:
+                verify_identity(driver, username, password)
+                # TODO log
+                print("Login in.")
+            except Exception:
+                notify_manager(name + " not login in")
 
         # wait page to load
         time.sleep(5)
 
         # fill the info
-        fill_health_info(driver, in_campus_status, location)
+        try:
+            fill_health_info(driver, in_campus_status, location)
+        except Exception:
+            notify_manager(name + " not fill the health the info")
 
         # end the session
         driver.quit()
 
 def main():
-    data = util.load_json_data("users-info.json")  # load users' info
+    data = load_json_data("users-info.json")  # load users' info
     fill_for_multiply_user(data['users_info'])
 
 if __name__ == "__main__":
