@@ -8,7 +8,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from EmailUtil import notify_manager
 from util import load_json_data
+import logging
 
+# set log (output INFO level)
+logging.basicConfig(filename="execution.log", encoding="utf-8", level=logging.INFO, format='%(asctime)s %(message)s')
 
 def verify_identity(driver, username, password):
     """Login in.
@@ -32,18 +35,20 @@ def verify_identity(driver, username, password):
         submit_button = driver.find_element(By.CLASS_NAME, 'login-button.ant-btn')
         submit_button.click()
 
-        # TODO log
+        logging.info("Login in")
     except Exception:
-        # TODO: log error
-        print("Cannot login in.")
+        logging.error(username + " cannot login in.")
+        notify_manager(username + " cannot login in")
 
 
-def fill_health_info(driver, in_campus_status=True, location="jingjiang"):
+def fill_health_info(driver, in_campus_status=True, location="jingjiang", name=""):
     """ Fill the health info form, and submit. If have 'start process' page, click the 'start process' button, and then
     start to fill the form.
 
     :param driver: web driver
     :param in_campus_status: 'True' represent inside school, 'False' represent outside school
+    :param location: location outside school
+    :param name: name of user
     :return: none
     """
 
@@ -109,17 +114,18 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang"):
         # wait the form to be submitted
         time.sleep(10)
 
-        # TODO log in
-        print("submit all information")
+        logging.info("submit all information")
     except Exception:
-        # TODO: log error
-        print("over time")
+        logging.error(name + " fill health info over time")
+        notify_manager(name + " fill health info over time")
     finally:
         driver.quit()
 
 
 def start_process(driver):
     """ Click 'start process' button and then fill the health info.
+
+        If over time, not quit. because there are two cases: 1) error, 2) user has submitted
 
     :param driver: web driver
     :param in_campus_status: 'True' represent inside school, 'False' represent outside school
@@ -131,13 +137,12 @@ def start_process(driver):
             EC.presence_of_element_located((By.ID, "preview_start_button"))
         )
         start_process.click()
-        print("Enter the health info page.")
+        logging.info("Enter the health info page.")
 
         # wait to new page (new url) load
         time.sleep(3)
     except Exception:
-        # TODO: log error
-        print("Cannot enter the start process page.")
+        logging.error("Cannot enter the start process page.")
 
 
 def fill_for_multiply_user(users):
@@ -162,21 +167,13 @@ def fill_for_multiply_user(users):
         title = driver.title
         if title == "统一身份认证平台":
             # need verify identity (every day need verify)
-            try:
-                verify_identity(driver, username, password)
-                # TODO log
-                print("Login in.")
-            except Exception:
-                notify_manager(name + " not login in")
+            verify_identity(driver, username, password)
 
         # wait page to load
         time.sleep(5)
 
         # fill the info
-        try:
-            fill_health_info(driver, in_campus_status, location)
-        except Exception:
-            notify_manager(name + " not fill the health the info")
+        fill_health_info(driver, in_campus_status, location, name)
 
         # end the session
         driver.quit()
