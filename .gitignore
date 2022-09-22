@@ -9,3 +9,6 @@ test.py
 # user info file
 manager_email_info.json
 users-info.json
+
+# log file
+execution.log
