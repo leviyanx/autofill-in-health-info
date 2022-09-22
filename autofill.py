@@ -80,7 +80,7 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
             student_class.send_keys("22电子信息")
             travel_record.send_keys("无")
 
-            print("text boxed filled")
+            logging.info("text boxed filled")
 
             # find checkbox
             promise_1 = driver.find_element(By.NAME, "fieldCN1")
@@ -97,7 +97,7 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
             promise_understand.click()
             promise.click()
 
-            print("checkboxes filled")
+            logging.info("checkboxes filled")
 
             # find the radios
             health_condition_1 = driver.find_element(By.ID, "V1_CTRL109")
@@ -119,7 +119,7 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
             # TODO: separate data
             # TODO: outside school, parse location string, choose region
 
-            print("radio filled")
+            logging.info("radio filled")
 
             # click 'submit' button
             submit_button = driver.find_element(By.CLASS_NAME, 'command_button')
