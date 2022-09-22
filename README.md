@@ -1,4 +1,4 @@
-auto fill health info script
+Automatically fill in health info (yzu)
 
 ## Requirement
 
@@ -51,3 +51,5 @@ explain location string : #TODO
 - [ ] Remotely,  perform in specified time
 - [x] fill for multiply users
 - [x] If fail, logging related error, skip current user and not affect next user, notify manager.
+
+## LICENCE
