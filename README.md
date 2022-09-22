@@ -1,14 +1,16 @@
-yzu auto fill health info script
+auto fill health info script
 
 ## Requirement
 
-python@3.10
+1.python@3.10
+
+2.python packages
 
 ```shell
 pip3 install selenium webdriver_manager json smtplib email
 ```
 
-user-info.json
+3.user-info.json
 
 ```json
 {
@@ -31,7 +33,7 @@ user-info.json
 
 explain location string : #TODO
 
-manager_email_info.json
+4.manager_email_info.json
 
 ```json
 {
