@@ -42,8 +42,7 @@ def verify_identity(driver, username, password):
 
 
 def fill_health_info(driver, in_campus_status=True, location="jingjiang", name=""):
-    """ Fill the health info form, and submit. If have 'start process' page, click the 'start process' button, and then
-    start to fill the form.
+    """ Fill the health info form, and submit. If the user has submitted health info, skip the process, else continue.
 
     :param driver: web driver
     :param in_campus_status: 'True' represent inside school, 'False' represent outside school
@@ -53,68 +52,83 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
     """
 
     try:
-        # click 'start process' button if needed
-        if driver.title != "填报健康信息 Fill in health information - 学生健康状况申报":
-            start_process(driver)
-
-        # find the text boxes
-        student_class = WebDriverWait(driver, 60).until(
-            EC.presence_of_element_located((By.NAME, "fieldJBXXnj")) # wait the page to load
+        # click the 'start process' button
+        start_process = WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.ID, "preview_start_button"))
         )
-        travel_record = driver.find_element(By.NAME, "fieldCXJL")
-        # fill in text box
-        student_class.send_keys("22电子信息")
-        travel_record.send_keys("无")
+        start_process.click()
 
-        print("text boxed filled")
+        # wait to new page (new url) load or pop up the message that the user has submitted health info
+        time.sleep(3)
 
-        # find checkbox
-        promise_1 = driver.find_element(By.NAME, "fieldCN1")
-        promise_2 = driver.find_element(By.NAME, "fieldCN2")
-        promise_3 = driver.find_element(By.NAME, "fieldCN3")
-        promise_4 = driver.find_element(By.NAME, "fieldCN4")
-        promise_understand = driver.find_element(By.NAME, "fieldTBTX")
-        promise = driver.find_element(By.NAME, "fieldCNS")
-        # click checkbox
-        promise_1.click()
-        promise_2.click()
-        promise_3.click()
-        promise_4.click()
-        promise_understand.click()
-        promise.click()
+        # recognize if the user has submitted the info
+        # If the user has submitted, skip the user, else continue
+        if has_submitted(driver):
+            # the user has submitted info, skip
+            logging.info(name + " has submitted the info")
+            driver.quit()
+        else:
+            # the user need fill the form
+            logging.info("Enter the health info page.")
 
-        print("checkboxes filled")
+            # find the text boxes
+            student_class = WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.NAME, "fieldJBXXnj")) # wait the page to load
+            )
+            travel_record = driver.find_element(By.NAME, "fieldCXJL")
+            # fill in text box
+            student_class.send_keys("22电子信息")
+            travel_record.send_keys("无")
 
-        # find the radios
-        health_condition_1 = driver.find_element(By.ID, "V1_CTRL109")
-        health_condition_2 = driver.find_element(By.ID, "V1_CTRL111")
-        health_condition_3 = driver.find_element(By.ID, "V1_CTRL114")
-        health_condition_4 = driver.find_element(By.ID, "V1_CTRL133")
-        health_condition_5 = driver.find_element(By.ID, "V1_CTRL135")
-        health_condition_6 = driver.find_element(By.ID, "V1_CTRL137")
-        # click radio
-        health_condition_1.click()
-        health_condition_2.click()
-        health_condition_3.click()
-        health_condition_4.click()
-        health_condition_5.click()
-        health_condition_6.click()
-        # default: inside school
-        # check this radio instead of click it, because 'this radio is not clickable at represented point
-        driver.execute_script("document.getElementById('fieldSFZX-0').checked = true;")
-        # TODO: separate data
-        # TODO: outside school, parse location string, choose region
+            print("text boxed filled")
 
-        print("radio filled")
+            # find checkbox
+            promise_1 = driver.find_element(By.NAME, "fieldCN1")
+            promise_2 = driver.find_element(By.NAME, "fieldCN2")
+            promise_3 = driver.find_element(By.NAME, "fieldCN3")
+            promise_4 = driver.find_element(By.NAME, "fieldCN4")
+            promise_understand = driver.find_element(By.NAME, "fieldTBTX")
+            promise = driver.find_element(By.NAME, "fieldCNS")
+            # click checkbox
+            promise_1.click()
+            promise_2.click()
+            promise_3.click()
+            promise_4.click()
+            promise_understand.click()
+            promise.click()
 
-        # click 'submit' button
-        submit_button = driver.find_element(By.CLASS_NAME, 'command_button')
-        submit_button.click()
+            print("checkboxes filled")
 
-        # wait the form to be submitted
-        time.sleep(10)
+            # find the radios
+            health_condition_1 = driver.find_element(By.ID, "V1_CTRL109")
+            health_condition_2 = driver.find_element(By.ID, "V1_CTRL111")
+            health_condition_3 = driver.find_element(By.ID, "V1_CTRL114")
+            health_condition_4 = driver.find_element(By.ID, "V1_CTRL133")
+            health_condition_5 = driver.find_element(By.ID, "V1_CTRL135")
+            health_condition_6 = driver.find_element(By.ID, "V1_CTRL137")
+            # click radio
+            health_condition_1.click()
+            health_condition_2.click()
+            health_condition_3.click()
+            health_condition_4.click()
+            health_condition_5.click()
+            health_condition_6.click()
+            # default: inside school
+            # check this radio instead of click it, because 'this radio is not clickable at represented point
+            driver.execute_script("document.getElementById('fieldSFZX-0').checked = true;")
+            # TODO: separate data
+            # TODO: outside school, parse location string, choose region
 
-        logging.info("submit all information")
+            print("radio filled")
+
+            # click 'submit' button
+            submit_button = driver.find_element(By.CLASS_NAME, 'command_button')
+            submit_button.click()
+
+            # wait the form to be submitted
+            time.sleep(10)
+
+            logging.info("submit all information")
     except Exception:
         logging.error(name + " fill health info over time")
         notify_manager(name + " fill health info over time")
@@ -122,27 +136,18 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
         driver.quit()
 
 
-def start_process(driver):
-    """ Click 'start process' button and then fill the health info.
-
-        If over time, not quit. because there are two cases: 1) error, 2) user has submitted
+def has_submitted(driver):
+    """ Check if the user has submitted health info.
 
     :param driver: web driver
-    :param in_campus_status: 'True' represent inside school, 'False' represent outside school
-    :return: none
+    :return: If the user has submitted, return true, else return false
     """
-    try:
-        # click the 'start process' button
-        start_process = WebDriverWait(driver, 60).until(
-            EC.presence_of_element_located((By.ID, "preview_start_button"))
-        )
-        start_process.click()
-        logging.info("Enter the health info page.")
 
-        # wait to new page (new url) load
-        time.sleep(3)
-    except Exception:
-        logging.error("Cannot enter the start process page.")
+    # If still stay the 'start process' page, means that the user has submitted
+    if driver.title == "学生健康状况申报":
+        return True
+    else:
+        return False
 
 
 def fill_for_multiply_user(users):
