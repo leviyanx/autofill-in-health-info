@@ -25,7 +25,6 @@ def email_me(subject, send_content):
 
     # load manager email info from file
     manager_email_data = load_json_data("manager_email_info.json")
-    print(manager_email_data)
 
     # sender information
     from_address = manager_email_data['from_address']  # sender email address
