@@ -53,3 +53,5 @@ explain location string : #TODO
 - [x] If fail, logging related error, skip current user and not affect next user, notify manager.
 
 ## LICENCE
+
+The MIT License (MIT)
