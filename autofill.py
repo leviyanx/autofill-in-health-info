@@ -31,6 +31,8 @@ def verify_identity(driver, username, password):
         # click 'submit' button
         submit_button = driver.find_element(By.CLASS_NAME, 'login-button.ant-btn')
         submit_button.click()
+
+        # TODO log
     except Exception:
         # TODO: log error
         print("Cannot login in.")
@@ -101,9 +103,13 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang"):
         print("radio filled")
 
         # click 'submit' button
-        submit_button = driver.find_element(By.CLASS_NAME, "command_button")
+        submit_button = driver.find_element(By.CLASS_NAME, 'command_button')
         submit_button.click()
 
+        # wait the form to be submitted
+        time.sleep(10)
+
+        # TODO log in
         print("submit all information")
     except Exception:
         # TODO: log error
