@@ -1,6 +1,6 @@
 yzu auto fill health info script
 
-Requirement
+## Requirement
 
 python@3.10
 
@@ -29,7 +29,7 @@ user-info.json
 }
 ```
 
-explain location string : TODO
+explain location string : #TODO
 
 manager_email_info.json
 
@@ -41,9 +41,9 @@ manager_email_info.json
 }
 ```
 
-Features
+## Features
 
-️-[x] Locally, auto login, auto fill, auto submit
--[] Remotely, perform above actions (in specified time)
+-[x] Locally, auto login, auto fill, auto submit
+-[ ] Remotely, perform above actions (in specified time)
 -[x] fill for multiply users
--[] If fail, log related error, skip current user and not affect next user, notify manager.
+-[x] If fail, logging related error, skip current user and not affect next user, notify manager.
