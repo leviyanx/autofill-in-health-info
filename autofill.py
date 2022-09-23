@@ -11,7 +11,9 @@ from util import load_json_data
 import logging
 
 # set log (output INFO level)
-logging.basicConfig(filename="execution.log", encoding="utf-8", level=logging.INFO, format='%(asctime)s %(message)s')
+logging.basicConfig(filename="execution.log", encoding="utf-8",
+                    level=logging.INFO, format='%(asctime)s %(message)s')
+
 
 def verify_identity(driver, username, password):
     """Login in.
@@ -27,12 +29,14 @@ def verify_identity(driver, username, password):
         username_box = WebDriverWait(driver, 60).until(
             EC.presence_of_element_located((By.NAME, "username"))
         )
-        password_box = driver.find_element(By.XPATH, "//input[@type='password']")
+        password_box = driver.find_element(
+            By.XPATH, "//input[@type='password']")
         username_box.send_keys(username)
         password_box.send_keys(password)
 
         # click 'submit' button
-        submit_button = driver.find_element(By.CLASS_NAME, 'login-button.ant-btn')
+        submit_button = driver.find_element(
+            By.CLASS_NAME, 'login-button.ant-btn')
         submit_button.click()
 
         logging.info("Login in")
@@ -73,7 +77,8 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
 
             # find the text boxes
             student_class = WebDriverWait(driver, 60).until(
-                EC.presence_of_element_located((By.NAME, "fieldJBXXnj")) # wait the page to load
+                EC.presence_of_element_located(
+                    (By.NAME, "fieldJBXXnj"))  # wait the page to load
             )
             travel_record = driver.find_element(By.NAME, "fieldCXJL")
             # fill in text box
@@ -113,16 +118,21 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
             health_condition_4.click()
             health_condition_5.click()
             health_condition_6.click()
+
+            logging.info("radio clicked except in_campus_status")
+
             # default: inside school
             # check this radio instead of click it, because 'this radio is not clickable at represented point
-            driver.execute_script("document.getElementById('fieldSFZX-0').checked = true;")
+            driver.execute_script(
+                "document.getElementById('fieldSFZX-0').checked = true;")
             # TODO: separate data
             # TODO: outside school, parse location string, choose region
 
             logging.info("radio filled")
 
             # click 'submit' button
-            submit_button = driver.find_element(By.CLASS_NAME, 'command_button')
+            submit_button = driver.find_element(
+                By.CLASS_NAME, 'command_button')
             submit_button.click()
 
             # wait the form to be submitted
@@ -171,7 +181,8 @@ def fill_for_multiply_user(users):
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-gpu')
         options.add_argument('--disable-dev-shm-usage')
-        driver = webdriver.Chrome(service=ChromeService(executable_path=ChromeDriverManager().install()), options=options)
+        driver = webdriver.Chrome(service=ChromeService(
+            executable_path=ChromeDriverManager().install()), options=options)
 
         driver.get("https://ehall.yzu.edu.cn/infoplus/form/XNYQSB/start")
 
@@ -190,9 +201,11 @@ def fill_for_multiply_user(users):
         # end the session
         driver.quit()
 
+
 def main():
     data = load_json_data("users-info.json")  # load users' info
     fill_for_multiply_user(data['users_info'])
+
 
 if __name__ == "__main__":
     main()
