@@ -165,7 +165,14 @@ def fill_for_multiply_user(users):
         in_campus_status = user['in_campus_status']
         location = user['location']
 
-        driver = webdriver.Chrome(service=ChromeService(executable_path=ChromeDriverManager().install()))
+        # config chrome driver to enable script to be performed in server
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--disable-dev-shm-usage')
+        driver = webdriver.Chrome(service=ChromeService(executable_path=ChromeDriverManager().install()), options=options)
+
         driver.get("https://ehall.yzu.edu.cn/infoplus/form/XNYQSB/start")
 
         # login in
