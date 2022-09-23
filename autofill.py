@@ -70,7 +70,6 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
         if has_submitted(driver):
             # the user has submitted info, skip
             logging.info(name + " has submitted the info")
-            driver.quit()
         else:
             # the user need fill the form
             logging.info("Enter the health info page.")
@@ -104,23 +103,19 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
 
             logging.info("checkboxes filled")
 
-            # find the radios
-            health_condition_1 = driver.find_element(By.ID, "V1_CTRL109")
-            health_condition_2 = driver.find_element(By.ID, "V1_CTRL111")
-            health_condition_3 = driver.find_element(By.ID, "V1_CTRL114")
-            health_condition_4 = driver.find_element(By.ID, "V1_CTRL133")
-            health_condition_5 = driver.find_element(By.ID, "V1_CTRL135")
-            health_condition_6 = driver.find_element(By.ID, "V1_CTRL137")
-            # click radio
-            health_condition_1.click()
-            health_condition_2.click()
-            health_condition_3.click()
-            health_condition_4.click()
-            health_condition_5.click()
-            health_condition_6.click()
-
-            logging.info("radio clicked except in_campus_status")
-
+            # find the radios and select (not use 'click' because clicking radio is not stable)
+            driver.execute_script(
+                "document.getElementById('V1_CTRL109').checked = true;")  # health_condition_1
+            driver.execute_script(
+                "document.getElementById('V1_CTRL111').checked = true;")  # health_condition_2
+            driver.execute_script(
+                "document.getElementById('V1_CTRL114').checked = true;")  # health_condition_3
+            driver.execute_script(
+                "document.getElementById('V1_CTRL133').checked = true;")  # health_condition_4
+            driver.execute_script(
+                "document.getElementById('V1_CTRL135').checked = true;")  # health_condition_5
+            driver.execute_script(
+                "document.getElementById('V1_CTRL137').checked = true;")  # health_condition_6
             # default: inside school
             # check this radio instead of click it, because 'this radio is not clickable at represented point
             driver.execute_script(
@@ -142,8 +137,6 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
     except Exception:
         logging.error(name + " fill health info over time")
         notify_manager(name + " fill health info over time")
-    finally:
-        driver.quit()
 
 
 def has_submitted(driver):

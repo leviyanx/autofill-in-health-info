@@ -1,6 +1,10 @@
+# project config
 .idea
+.run
+venv
 
 # cache
+.DS_Store
 __pycache__
 
 # test file
