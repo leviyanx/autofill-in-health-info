@@ -47,8 +47,7 @@ explain location string : #TODO
 
 - [x] Locally, auto login, auto fill, auto submit
 - [x] Recognize if the user has submitted the info
-- [ ] Remotely, perform above actions
-- [ ] Remotely,  perform in specified time
+- [x] Remotely, perform above actions
 - [x] fill for multiply users
 - [x] If fail, logging related error, skip current user and not affect next user, notify manager.
 
