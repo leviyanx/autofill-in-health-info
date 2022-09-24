@@ -43,6 +43,25 @@ explain location string : #TODO
 }
 ```
 
+5.crontab
+
+## Run
+
+Manual execute
+
+```shell
+# 1. cd the script dir
+# 2. execute this script
+/usr/local/bin/python3.10 ./autofill.py
+```
+
+Execute in specified time with crontab
+
+```shell
+# automatically fill health info in EVERYDAY 14:30
+30 14 * * * bash /root/autofill-health-info/autofill.sh >> /root/autofill-health-info/crond-execution.log 2>&1 &
+```
+
 ## Features
 
 - [x] Locally, auto login, auto fill, auto submit
