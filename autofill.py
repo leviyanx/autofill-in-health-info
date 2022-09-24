@@ -69,7 +69,7 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
         # If the user has submitted, skip the user, else continue
         if has_submitted(driver):
             # the user has submitted info, skip
-            logging.info(name + " has submitted the info")
+            logging.warning(name + " has submitted the info")
         else:
             # the user need fill the form
             logging.info("Enter the health info page.")
@@ -133,7 +133,7 @@ def fill_health_info(driver, in_campus_status=True, location="jingjiang", name="
             # wait the form to be submitted
             time.sleep(10)
 
-            logging.info("submit all information")
+            logging.info(name + " submits all information")
     except Exception:
         logging.error(name + " fill health info over time")
         notify_manager(name + " fill health info over time")
