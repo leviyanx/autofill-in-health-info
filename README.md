@@ -47,7 +47,7 @@ explain location string : #TODO
 
 ## Run
 
-Manual execute
+Manual Execution
 
 ```shell
 # 1. cd the script dir
@@ -55,11 +55,14 @@ Manual execute
 /usr/local/bin/python3.10 ./autofill.py
 ```
 
-Execute in specified time with crontab
+Timed Execution
+
+1. set crontab task: `crontab -e`
+2. fill these statements
 
 ```shell
 # automatically fill health info in EVERYDAY 14:30
-30 14 * * * bash /root/autofill-health-info/autofill.sh >> /root/autofill-health-info/crond-execution.log 2>&1 &
+30 14 * * * bash /dir/to/autofill-health-info/autofill.sh >> /dir/to/autofill-health-info/crond-execution.log 2>&1 &
 ```
 
 ## Features
