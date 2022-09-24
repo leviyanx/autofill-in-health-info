@@ -12,7 +12,7 @@ import logging
 
 # set log (output INFO level)
 logging.basicConfig(filename="execution.log", encoding="utf-8",
-                    level=logging.INFO, format='%(asctime)s %(message)s')
+                    level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 
 
 def verify_identity(driver, username, password):
