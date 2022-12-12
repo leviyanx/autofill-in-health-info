@@ -2,6 +2,8 @@
 
 （2022-11-12）明天就是行程卡正式下线的日子，疫情封控时代即将落幕，这个项目也到了归档的时刻了。
 
+<img src="./images/IMG_3936.JPG"  height = "500" align=center />
+
 ## Requirement
 
 1.python@3.10
