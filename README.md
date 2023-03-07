@@ -6,15 +6,15 @@
 
 ## Requirement
 
-1.python@3.10
+Environment: Python@3.10
 
-2.python packages
+Denpendences. Install these python packages:
 
 ```shell
 pip3 install selenium webdriver_manager json smtplib email
 ```
 
-3.user-info.json
+Create a `user-info.json` in project root directory, the contents in the file like this, and fill in information of user who want to use this script.
 
 ```json
 {
@@ -35,9 +35,9 @@ pip3 install selenium webdriver_manager json smtplib email
 }
 ```
 
-explain location string : #TODO
+Tip: Now `location` item don't need to be filled in, and you should leave it without any action.
 
-4.manager_email_info.json
+Create a `manager_email_info.json` file in root directory of project, and the content in it like this. Replace these information with yours.
 
 ```json
 {
@@ -47,11 +47,9 @@ explain location string : #TODO
 }
 ```
 
-5.crontab
+## Usage
 
-## Run
-
-Manual Execution
+### Manual Execution
 
 ```shell
 # 1. cd the script dir
@@ -59,22 +57,22 @@ Manual Execution
 /usr/local/bin/python3.10 ./autofill.py
 ```
 
-Timed Execution
+### Scheduled execution
 
-1. set crontab task: `crontab -e`
-2. fill these statements
+1. Set crontab task: `crontab -e`
+2. Fill in these expression:
 
 ```shell
-# automatically fill health info in EVERYDAY 14:30
+# automatically filling in health info in EVERYDAY 14:30
 30 14 * * * bash /dir/to/autofill-health-info/autofill.sh >> /dir/to/autofill-health-info/crond-execution.log 2>&1 &
 ```
 
 ## Features
 
-- [x] Locally, auto login, auto fill, auto submit
-- [x] Recognize if the user has submitted the info
-- [x] Remotely, perform above actions
-- [x] fill for multiply users
+- [x] In local machine, auto login, auto fill, auto submit
+- [x] Identify whether the user has submitted the information
+- [x] In server, perform above actions
+- [x] Support multiple users
 - [x] If fail, logging related error, skip current user and not affect next user, notify manager.
 
 ## LICENCE
